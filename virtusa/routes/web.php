@@ -1,5 +1,5 @@
 <?php
-
+use App\user_status;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,6 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/','PagesController@home');
+Route::get('/about','PagesController@about');
+Route::get('/service','PagesController@services');
+Route::resource('posts','PostController');
+Route::get('/register',function(){
+    return view('register');
+})->name('register');
+Auth::routes();
+
+Route::get('/dashboard', 'DashboardController@index');
+Route::get('setuseronlineoffline/{user_id}/{status}',function($user_id,$status){
+    $status = user_status::updateOrCreate(['user_id' => $user_id],['status' => $status]);
+    return user_status::all();
+});
+Route::get('getonlineusers',function(){
+    return user_status::all();
 });

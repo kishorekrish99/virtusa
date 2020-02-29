@@ -26,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -36,5 +36,19 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }    
+    public function login(Request $request) {
+        if (Auth::attempt ( array (
+                'email' => $request->get ( 'email' ),
+                'password' => $request->get ( 'password' ) 
+        ) )) {
+            session ( [ 
+                    'name' => $request->get ( 'username' ) 
+            ] );
+            return Redirect::back ();
+        } else {
+            Session::flash ( 'message', "Invalid Credentials , Please try again." );
+            return Redirect::back ();
+        }
     }
 }
