@@ -90,6 +90,16 @@ class PostController extends Controller
         $post= Post::find($id);
         $post->title=$request->input('title');
         $post->body=$request->input('body');
+        if($request->hasfile('image')){
+        $extention=$file->getClientOriginalExtention();
+        $filename=time()-'.'.$extension;
+        $file->move('uploads/employees/',$filename);
+        $post->image=$filename;
+         }
+         else { 
+        return $request;
+        $post->image='';
+         }
         $post->save();
         return redirect('/posts')->with('sucess','Post Updated');
     }

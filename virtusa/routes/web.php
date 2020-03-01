@@ -19,7 +19,7 @@ Route::get('/register',function(){
     return view('register');
 })->name('register');
 Auth::routes();
-
+Route::get('/logout','PagesController@dashboard');
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('setuseronlineoffline/{user_id}/{status}',function($user_id,$status){
     $status = user_status::updateOrCreate(['user_id' => $user_id],['status' => $status]);
